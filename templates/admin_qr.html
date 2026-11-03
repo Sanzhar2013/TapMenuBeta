@@ -1,0 +1,5 @@
+{% extends "admin_base.html" %}{% block c %}<h2>QR-коды и NFC</h2>
+<p class="muted">NFC: запишите ссылку в метку приложением «NFC Tools» (запись → URL). Ссылка для общего меню:<br><code>{{ root }}</code><br>Для столика: <code>{{ root }}?t=НОМЕР</code></p>
+<div class="qrs"><figure><img src="{{ url_for('admin.qr_img', n=0) }}" alt=""><figcaption>Общий QR</figcaption></figure>
+{% for i in range(1, n + 1) %}<figure><img loading="lazy" src="{{ url_for('admin.qr_img', n=i) }}" alt=""><figcaption>Столик №{{ i }}</figcaption></figure>{% endfor %}</div>
+<button class="btn" onclick="window.print()">Печать</button>{% endblock %}

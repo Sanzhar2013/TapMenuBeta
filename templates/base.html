@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="csrf-token" content="{{ csrf_token() }}"><meta name="theme-color" content="#0b0b0b">
+<title>{% block title %}TapMenu{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script>var l=localStorage.getItem('lang');if(l)document.documentElement.lang=l</script>
+</head><body class="{% block bc %}{% endblock %}">
+<svg width="0" height="0" style="position:absolute"><symbol id="orn" viewBox="0 0 60 24">
+<path d="M30 12C30 4 21 2 17 6c-4 4 0 9 4 7 3-2 1-5-1-4M30 12c0-8 9-10 13-6 4 4 0 9-4 7-3-2-1-5 1-4M2 12h10M48 12h10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol></svg>
+{% with m = get_flashed_messages(with_categories=true) %}{% for c, msg in m %}<div class="flash {{ c }}">{{ msg }}</div>{% endfor %}{% endwith %}
+{% block body %}{% endblock %}
+</body></html>

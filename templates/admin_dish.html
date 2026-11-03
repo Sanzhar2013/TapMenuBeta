@@ -1,0 +1,13 @@
+{% extends "admin_base.html" %}{% block c %}
+<h2>{{ 'Редактирование блюда' if d.id else 'Новое блюдо' }}</h2>
+<form method="post" enctype="multipart/form-data" class="f"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Категория<select name="category_id">{% for c in cats %}<option value="{{ c.id }}" {{ 'selected' if c.id == d.category_id }}>{{ c.name }}</option>{% endfor %}</select></label>
+<label>Название (рус)<input name="name" value="{{ d.name or '' }}" required maxlength="120"></label>
+<label>Название (қаз)<input name="name_kk" value="{{ d.name_kk or '' }}" maxlength="120"></label>
+<label>Описание (рус)<textarea name="description" rows="2" maxlength="500">{{ d.description or '' }}</textarea></label>
+<label>Описание (қаз)<textarea name="description_kk" rows="2" maxlength="500">{{ d.description_kk or '' }}</textarea></label>
+<label>Цена, ₸<input name="price" type="number" min="0" value="{{ d.price if d.id else '' }}" required></label>
+<label>Метка<select name="badge"><option value="">—</option>{% for v, n in [('hit','Хит'),('new','Новинка'),('spicy','Острое')] %}<option value="{{ v }}" {{ 'selected' if d.badge == v }}>{{ n }}</option>{% endfor %}</select></label>
+<label>Фото (JPG/PNG/WEBP до 6 МБ){% if d.photo %}<br><img class="thumb" src="{{ url_for('public.media', name=d.photo) }}" alt="">{% endif %}<input type="file" name="photo" accept="image/*"></label>
+<label class="chk"><input type="checkbox" name="hidden" {{ 'checked' if d.hidden }}> Скрыть из меню</label>
+<button class="btn">Сохранить</button></form>{% endblock %}

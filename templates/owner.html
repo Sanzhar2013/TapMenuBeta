@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block bc %}adm{% endblock %}{% block body %}
+<nav class="anav"><b>TapMenu · Владелец</b><form method="post" action="{{ url_for('admin.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="link">Выход</button></form></nav>
+<main class="wrap"><h2>Кафе</h2>
+<table><tr><th>Кафе</th><th>Адрес</th><th>Блюд</th><th>Вызовов</th><th>Админ</th><th></th></tr>
+{% for c, dishes, calls, u in rows %}<tr class="{{ 'off' if not c.active }}"><td>{{ c.name }}</td><td><a href="{{ url_for('public.menu', slug=c.slug) }}" target="_blank">/c/{{ c.slug }}</a></td><td>{{ dishes }}</td><td>{{ calls }}</td><td>{{ u.username if u }}</td>
+<td><form method="post" class="inl"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="btn sm ghost" formaction="{{ url_for('owner.toggle', id=c.id) }}">{{ 'Включить' if not c.active else 'Отключить' }}</button>
+<input name="password" type="password" placeholder="новый пароль" style="width:130px"><button class="btn sm ghost" formaction="{{ url_for('owner.password', id=c.id) }}">Сменить</button></form></td></tr>{% endfor %}</table>
+<h3>Подключить новое кафе</h3>
+<form method="post" class="f"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Название кафе<input name="name" required></label>
+<label>Адрес меню (латиница, например cafe-altyn)<input name="slug" required pattern="[a-z0-9-]{3,40}"></label>
+<label>Логин администратора<input name="username" required></label>
+<label>Пароль (от 8 символов)<input name="password" type="password" minlength="8" required></label>
+<button class="btn">Создать</button></form></main>{% endblock %}

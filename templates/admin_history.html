@@ -1,0 +1,3 @@
+{% extends "admin_base.html" %}{% block c %}<h2>История вызовов</h2>
+<table><tr><th>Время</th><th>Столик</th><th>Комментарий</th><th>Статус</th></tr>
+{% for c in calls %}<tr><td>{{ c.created_at|local }}</td><td>№{{ c.table }}</td><td>{{ c.comment }}</td><td>{{ 'Выполнен' if c.status == 'done' else 'Отменён' }}</td></tr>{% endfor %}</table>{% endblock %}

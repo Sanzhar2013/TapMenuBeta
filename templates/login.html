@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block bc %}adm{% endblock %}{% block body %}
+<main class="login"><svg class="orn big"><use href="#orn"/></svg><h1>TapMenu</h1>
+<form method="post" class="f"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Логин<input name="username" autocomplete="username" required autofocus></label>
+<label>Пароль<input type="password" name="password" autocomplete="current-password" required></label>
+<button class="btn">Войти</button></form></main>{% endblock %}

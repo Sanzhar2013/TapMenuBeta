@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block body %}
+<main class="land"><svg class="orn big"><use href="#orn"/></svg>
+<h1>Tap<span>Menu</span></h1><p class="muted">Ас мәзірі • Бір қолмен</p>
+<p>Электронное меню для кафе: QR/NFC, русский и казахский, вызов официанта в Telegram.</p>
+<a class="btn" href="{{ url_for('public.menu', slug='demo', t=5) }}">Открыть демо-меню</a>
+<a class="btn ghost" href="{{ url_for('admin.login') }}">Вход для кафе</a></main>
+{% endblock %}

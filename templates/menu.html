@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% from "macros.html" import t %}
+{% block title %}{{ cafe.name }} — TapMenu{% endblock %}
+{% block body %}
+<header class="hero">
+<button id="lang" class="lang" type="button">ҚАЗ</button>
+{% if cafe.logo %}<img class="logo" src="{{ url_for('public.media', name=cafe.logo) }}" alt="">{% else %}<svg class="logo"><use href="#orn"/></svg>{% endif %}
+<h1>{{ t(cafe.name, cafe.name_kk) }}</h1>
+<p class="muted">{{ t(cafe.description, cafe.description_kk) }}</p>
+<svg class="div"><use href="#orn"/></svg>
+{% if table %}<div class="tbl">{{ t('Столик', 'Үстел') }} №{{ table }}</div>{% endif %}
+<input id="q" type="search" placeholder="Поиск · Іздеу" autocomplete="off">
+</header>
+<nav class="tabs" id="tabs"><button class="on" data-c="all">{{ t('Все', 'Барлығы') }}</button>
+{% for c, _ in sections %}<button data-c="{{ c.id }}">{{ t(c.name, c.name_kk) }}</button>{% endfor %}</nav>
+<main class="wrap">
+{% for c, dishes in sections %}
+<section class="sec" data-c="{{ c.id }}"><h2>{{ t(c.name, c.name_kk) }}</h2>
+{% for d in dishes %}
+<article class="card" data-s="{{ (d.name ~ ' ' ~ (d.name_kk or '') ~ ' ' ~ (d.description or '') ~ ' ' ~ (d.description_kk or ''))|lower }}">
+<div class="ph">{% if d.photo %}<img loading="lazy" src="{{ url_for('public.media', name=d.photo) }}" alt="{{ d.name }}">{% else %}<svg><use href="#orn"/></svg>{% endif %}
+{% if d.badge == 'hit' %}<span class="badge">{{ t('Хит', 'Хит') }}</span>{% elif d.badge == 'new' %}<span class="badge">{{ t('Новинка', 'Жаңа') }}</span>{% elif d.badge == 'spicy' %}<span class="badge">{{ t('Острое', 'Ащы') }}</span>{% endif %}</div>
+<div class="info"><h3>{{ t(d.name, d.name_kk) }}</h3><p>{{ t(d.description, d.description_kk) }}</p><b class="price">{{ d.price|money }} ₸</b></div>
+</article>{% endfor %}</section>
+{% endfor %}
+<p id="empty" class="muted" hidden>{{ t('Ничего не найдено', 'Ештеңе табылмады') }}</p>
+</main>
+<button id="fab" class="fab" type="button">🔔 {{ t('Вызвать официанта', 'Даяшыны шақыру') }}</button>
+<div id="modal" class="modal" hidden data-url="{{ url_for('public.call', slug=cafe.slug) }}"><div class="sheet">
+<h2>{{ t('Вызвать официанта', 'Даяшыны шақыру') }}</h2>
+<label>{{ t('Номер столика', 'Үстел нөмірі') }}<input id="table" inputmode="numeric" maxlength="10" value="{{ table }}"></label>
+<div class="chips">
+<button type="button" class="chip" data-v="Принесите счёт">{{ t('Счёт', 'Шот') }}</button>
+<button type="button" class="chip" data-v="Принесите салфетки">{{ t('Салфетки', 'Майлықтар') }}</button>
+<button type="button" class="chip" data-v="Нужна помощь">{{ t('Помощь', 'Көмек') }}</button>
+<button type="button" class="chip" data-v="Хотим сделать заказ">{{ t('Заказ', 'Тапсырыс') }}</button></div>
+<label>{{ t('Комментарий', 'Пікір') }}<textarea id="comment" maxlength="300" rows="2"></textarea></label>
+<div class="row"><button id="close" type="button" class="btn ghost">{{ t('Отмена', 'Болдырмау') }}</button>
+<button id="send" type="button" class="btn">{{ t('Подтвердить', 'Растау') }}</button></div></div></div>
+<div id="toast" class="toast" hidden></div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "admin_base.html" %}{% block c %}<h2>Настройки кафе</h2>
+<form method="post" enctype="multipart/form-data" class="f"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Название (рус)<input name="name" value="{{ c.name }}" required></label>
+<label>Название (қаз)<input name="name_kk" value="{{ c.name_kk or '' }}"></label>
+<label>Описание (рус)<textarea name="description" rows="2">{{ c.description or '' }}</textarea></label>
+<label>Описание (қаз)<textarea name="description_kk" rows="2">{{ c.description_kk or '' }}</textarea></label>
+<label>Логотип{% if c.logo %}<br><img class="thumb" src="{{ url_for('public.media', name=c.logo) }}" alt="">{% endif %}<input type="file" name="logo" accept="image/*"></label>
+<label>Количество столиков (для QR)<input type="number" name="tables_count" min="1" max="200" value="{{ c.tables_count }}"></label>
+<h3>Telegram</h3>
+<label>Chat ID (число или @канал)<input name="tg_chat_id" value="{{ c.tg_chat_id or '' }}"></label>
+<label>Токен своего бота (необязательно{{ ', иначе используется общий бот TapMenu' if shared_bot }})<input name="tg_token" type="password" placeholder="{{ '••• сохранён' if c.tg_token else '' }}" autocomplete="off"></label>
+<button class="btn">Сохранить</button>
+<button class="btn ghost" formaction="{{ url_for('admin.test_tg') }}" formnovalidate>Отправить тест в Telegram</button></form>{% endblock %}

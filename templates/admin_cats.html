@@ -1,0 +1,6 @@
+{% extends "admin_base.html" %}{% block c %}<h2>Категории</h2>
+{% for c in cats %}<form method="post" action="{{ url_for('admin.category_update', id=c.id) }}" class="inl wide"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<input name="name" value="{{ c.name }}" required><input name="name_kk" value="{{ c.name_kk or '' }}" placeholder="қазақша"><input name="position" type="number" value="{{ c.position }}" title="Порядок" style="width:70px">
+<button class="btn sm">Сохранить</button><button class="btn sm ghost" formaction="{{ url_for('admin.category_delete', id=c.id) }}" onclick="return confirm('Удалить категорию?')">Удалить</button></form>{% endfor %}
+<h3>Новая категория</h3><form method="post" class="inl wide"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<input name="name" placeholder="Название" required><input name="name_kk" placeholder="қазақша"><button class="btn sm">Добавить</button></form>{% endblock %}

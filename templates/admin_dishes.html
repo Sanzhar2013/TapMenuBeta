@@ -1,0 +1,8 @@
+{% extends "admin_base.html" %}{% block c %}
+<h2>Блюда <a class="btn sm" href="{{ url_for('admin.dish_edit') }}">+ Добавить</a></h2>
+<table><tr><th>Блюдо</th><th>Категория</th><th>Цена</th><th></th></tr>
+{% for d in dishes %}<tr class="{{ 'off' if d.hidden }}"><td>{{ d.name }}{% if d.hidden %} <small>(скрыто)</small>{% endif %}</td><td>{{ d.category.name }}</td><td>{{ d.price|money }} ₸</td>
+<td><form method="post" class="inl"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<a class="btn sm ghost" href="{{ url_for('admin.dish_edit', id=d.id) }}">Изменить</a>
+<button class="btn sm ghost" formaction="{{ url_for('admin.dish_toggle', id=d.id) }}">{{ 'Показать' if d.hidden else 'Скрыть' }}</button>
+<button class="btn sm ghost" formaction="{{ url_for('admin.dish_delete', id=d.id) }}" onclick="return confirm('Удалить блюдо?')">Удалить</button></form></td></tr>{% endfor %}</table>{% endblock %}

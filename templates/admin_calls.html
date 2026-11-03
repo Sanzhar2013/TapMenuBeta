@@ -1,0 +1,10 @@
+{% extends "admin_base.html" %}{% block c %}
+<meta http-equiv="refresh" content="15">
+<h2>Активные вызовы <small class="muted">· сегодня всего: {{ today }}</small></h2>
+{% for c in calls %}<div class="row2 {{ 'hot' if c.status == 'new' }}">
+<div><b>Столик №{{ c.table }}</b> <span class="muted">{{ c.created_at|local }}</span>{% if not c.notified %} <span class="warn">⚠ Telegram не доставлен</span>{% endif %}<br>{{ c.comment or '—' }}</div>
+<form method="post" class="inl"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% if c.status == 'new' %}<button class="btn sm" formaction="{{ url_for('admin.call_status', id=c.id, status='accepted') }}">Принять</button>{% endif %}
+<button class="btn sm" formaction="{{ url_for('admin.call_status', id=c.id, status='done') }}">Готово</button>
+<button class="btn sm ghost" formaction="{{ url_for('admin.call_status', id=c.id, status='cancelled') }}">Отмена</button></form></div>
+{% else %}<p class="muted">Активных вызовов нет. Страница обновляется каждые 15 секунд.</p>{% endfor %}{% endblock %}
